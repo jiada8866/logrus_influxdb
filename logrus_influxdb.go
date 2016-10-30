@@ -21,14 +21,14 @@ var (
 
 // InfluxDBHook delivers logs to an InfluxDB cluster.
 type InfluxDBHook struct {
-	sync.Mutex          // TODO: we should clean up all of these locks
-	client              influxdb.Client
+	sync.Mutex                       // TODO: we should clean up all of these locks
+	client                           influxdb.Client
 	precision, database, measurement string
-	tagList             []string
-	batchP              influxdb.BatchPoints
-	lastBatchUpdate     time.Time
-	batchInterval       time.Duration
-	batchCount          int
+	tagList                          []string
+	batchP                           influxdb.BatchPoints
+	lastBatchUpdate                  time.Time
+	batchInterval                    time.Duration
+	batchCount                       int
 }
 
 // NewInfluxDB returns a new InfluxDBHook.
@@ -59,7 +59,7 @@ func NewInfluxDB(config *Config, clients ...influxdb.Client) (hook *InfluxDBHook
 	hook = &InfluxDBHook{
 		client:        client,
 		database:      config.Database,
-		measurement:	 config.Measurement,
+		measurement:   config.Measurement,
 		tagList:       config.Tags,
 		batchInterval: config.BatchInterval,
 		batchCount:    config.BatchCount,
@@ -143,7 +143,9 @@ func (hook *InfluxDBHook) handleBatch() {
 	for {
 		time.Sleep(hook.batchInterval)
 		hook.Lock()
-		hook.writePoints()
+		if hook.batchP != nil {
+			hook.writePoints()
+		}
 		hook.Unlock()
 	}
 }
