@@ -13,6 +13,7 @@ var (
 	defaultHost          = "localhost"
 	defaultPort          = 8086
 	defaultDatabase      = "logrus"
+	defaultTimeout       = 100 * time.Millisecond
 	defaultBatchInterval = 5 * time.Second
 	defaultMeasurement   = "logrus"
 	defaultBatchCount    = 200
