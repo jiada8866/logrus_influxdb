@@ -80,6 +80,9 @@ func NewInfluxDB(config *Config, clients ...influxdb.Client) (hook *InfluxDBHook
 func (hook *InfluxDBHook) Fire(entry *logrus.Entry) (err error) {
 	// If passing a "message" field then it will be overridden by the entry Message
 	entry.Data["message"] = entry.Message
+	defer func() {
+		delete(entry.Data, "message")
+	}()
 
 	measurement := hook.measurement
 	if result, ok := getTag(entry.Data, "measurement"); ok {
