@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	influxdb "github.com/influxdata/influxdb/client/v2"
+	"github.com/sirupsen/logrus"
 )
 
 var (
